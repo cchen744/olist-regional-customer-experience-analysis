@@ -39,7 +39,13 @@ Metric 1: Order Volume (by region)
 Metric 2: Seller Count / Seller Density (by region)
 
 ## 6. Analytical Plan
-**Step 0**: Establish regional baseline metrics by aggregating negative review rate, average delivery time, and seller density at the state level.
+**Step 0**: Establish regional baseline metrics at the state level by aggregating
+
+          (1) the proportion of negative reviews (defined as review score ≤ 2 among reviewed orders) per state;
+
+          (2) average delivery time per state, computed for all delivered orders as well as for orders with negative reviews; and
+
+          (3) seller presence metrics, measured as the number of unique sellers per state.
 
 **Step 1**: Identify regions with disproportionately high levels of customer dissatisfaction based on region-level negative review metrics.
 
