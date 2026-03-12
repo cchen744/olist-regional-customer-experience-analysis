@@ -1,86 +1,92 @@
-# olist-regional-customer-experience-analysis
+# Geospatial Machine Learning for Predicting Customer Dissatisfaction in Brazilian E-commerce
 ## 1. Business Context
 Olist is a large e-commerce platform operating across Brazil, connecting sellers and customers nationwide. As the platform continues to expand into new markets and scale its operations, maintaining a consistent and satisfactory customer experience becomes increasingly critical.
 
-Customer reviews provide direct signals of user dissatisfaction and potential friction points in the order fulfillment process. However, it is currently unclear whether negative customer experiences are evenly distributed across regions or concentrated in specific areas, which may pose a risk to sustainable growth if left unaddressed.
+Customer reviews provide direct signals of user dissatisfaction and potential friction points in the order fulfillment process. However, it is currently unclear that what factors influencing negative customer experiences most, and whether negative reviews are evenly distributed across regions or concentrated in specific areas, which may pose a risk to sustainable growth if left unaddressed.
 
-## 2. Business Objective
-The objective of this analysis is to examine whether negative customer reviews exhibit spatial concentration across regions and, if so, to identify which regions should be prioritized for further attention. In addition, the analysis aims to explore potential factors associated with this spatial pattern of dissatisfaction, in order to support more targeted follow-up investigations.
+This leads to the project's core question:
+```code
+Which orders are most likely to result in negative customer reviews, and whereare these risks geographically concentrated?
+```
 
-## 3. Key Business Questions
-**Question 1**: Is customer dissatisfaction, as reflected by negative reviews, evenly distributed across regions, or does it exhibit spatial concentration? If spatial concentration exists, which regions show the highest levels of negative reviews?
+## 2. Dataset
+Data sources: Brazilian E-Commerce Public Dataset by Olist (from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce))
 
-**Question 2**: Within regions with a high concentration of negative reviews, is there evidence of an association between negative reviews and delivery performance, such as longer delivery times?
+The following datasets are included:
+| Dataset | # of Features | Features | Size |
+|---------|---------------|----------|------|
+| orders | 8 | `order_id`, `customer_id`, `order_status`, `order_purchase_timestamp`, `order_approved_at`, `order_delivered_carrier_date`, `order_delivered_customer_date`, `order_estimated_delivery_date` | (99441, 8) |
+| order_items | 7 | `order_id`, `order_item_id`, `product_id`, `seller_id`, `shipping_limit_date`, `price`, `freight_value` | (112650, 7) |
+| customers | 5 | `customer_id`, `customer_unique_id`, `customer_zip_code_prefix`, `customer_city`, `customer_state` | (99441, 5) |
+| sellers | 4 | `seller_id`, `seller_zip_code_prefix`, `seller_city`, `seller_state` | (3095, 4) |
+| geolocation | 5 | `geolocation_zip_code_prefix`, `geolocation_lat`, `geolocation_lng`, `geolocation_city`, `geolocation_state` | (1000163, 5) |
+| product_category_name_translation | 2 | `product_category_name`, `product_category_name_english` | (71, 2) |
+| order_reviews | 7 | `review_id`, `order_id`, `review_score`, `review_comment_title`, `review_comment_message`, `review_creation_date`, `review_answer_timestamp` | (99224, 7) |
+| products | 9 | `product_id`, `product_category_name`, `product_name_lenght`, `product_description_lenght`, `product_photos_qty`, `product_weight_g`, `product_length_cm`, `product_height_cm`, `product_width_cm` | (32951, 9) |
+| order_payments | 5 | `order_id`, `payment_sequential`, `payment_type`, `payment_installments`, `payment_value` | (103886, 5) |
 
-## 4. Data Scope
-Data sources: Brazilian E-Commerce Public Dataset by Olist (from Kaggle)
+These datasets are merged to construct an order-level analytical dataset.
 
-Geographic level: [to be specified]
+## 3. Feature Engineering
+Features are divided into three categories.
 
-Time coverage: [to be specified]
+(1) **Delivery performance (derived from timestamps)**
+```code
+delivery_days # delievered_time - ordered_time
+late_delievery # wether an order is late delievered
+delay_days # how long an order is delayed
+```
 
-## 5. Metric Definitions
-**Customer Experience Metrics**
+(2) **Spatial features**
+```code
+customer_location
+seller_location
+shipping_distance # |cutomer_location - seller_location|
+seller_density # this is important because higher seller density might cause more logistic burden.
+```
 
-Metric 1: regional proportion of negative reviews
+(3) **Order & product features**
+```code
+price
+freight_ratio # freigh_value / price. Note that freight value is shipping cost.
+product_category
+product_size
+num_items
+```
 
-Metric 2: [to be specified]
+## 4. Exploratory Data Analysis
+(1) Review the distribution of negative reviews
+(2) Compare delievery delay with review outcome
+(3) ?
 
-**Delivery Performance Metrics**
+## 5. Modeling
+**Baseline**: Logistic Regression
+**Main model**: (Gradient Boosting)?
+**Prediction target**: negative review
+**Evaluation Metrics**: ROC-AUC; Precision; Recall
 
-Metric 1: average delivery time
+## 6.Model Interpretation
+Use SHAP values and feature importance analysis to identify drivers of customer dissatisfaction
 
-Metric 2: [to be specified]
+## 7. Spatial Analysis
+Goal: identify geographic clusters of high dissatisfaction risk
+Processes:
+(1) predict complaint probability for each other
+(2) aggregate predictions by city/state
+(3) create spatial risk maps
 
-**Business Scale / Context Metrics**
+## 8. Key Findings
 
-Metric 1: Order Volume (by region)
+## 9. Project Structure
+```code
+data/
+notebooks/
+01_data_preparation.ipynb
+02_feature_engineering.ipynb
+03_EDA.ipynb
+04_modeling.ipynb
+05_geo_analysis.ipynb
 
-Metric 2: Seller Count / Seller Density (by region)
-
-## 6. Analytical Plan
-**Step 0**: Establish regional baseline metrics at the state level by aggregating
-
-          (1) the proportion of negative reviews (defined as review score ≤ 2 among reviewed orders) per state;
-
-          (2) average delivery time per state, computed for all delivered orders as well as for orders with negative reviews; and
-
-          (3) seller presence metrics, measured as the number of unique sellers per state.
-
-**Step 1**: Identify regions with disproportionately high levels of customer dissatisfaction based on region-level negative review metrics.
-
-**Step 2**: Examine the relationship between delivery performance and negative reviews using correlation-based analysis, with a focus on:
-          
-          - Overall regional-level patterns
-          
-          - Subset of regions identified as high-dissatisfaction regions in Step 1
-          
-**Step 3**: Analyze seller–customer distance patterns to assess whether geographic separation may help explain delivery performance differences across regions.
-
-**Step 4**: If delivery performance does not sufficiently explain the observed pattern, explore additional factors such as product category and price level to assess their association with negative reviews.
-
-## 7. Expected Insights 
-
-**Expected insight type 1**: Identification of regions with systematically higher proportions of negative reviews, indicating relatively lower customer satisfaction.
-
-**Expected insight type 2**: Assessment of whether delivery performance is significantly associated with negative reviews in high-complaint regions.
-
-**Expected insight type 3**: [to be specified]
-
-## 8. Decision Implications
-The results of this analysis are expected to support the prioritization of regions for further operational investigation, helping the company determine where attention should be focused first rather than applying uniform strategies across all markets.
-
-## 9. Scope and Limitations
-This project focuses on identifying regional patterns of customer dissatisfaction and exploring factors associated with negative reviews. It does not attempt to prescribe specific operational solutions, such as logistics optimization or delivery process redesign, as these actions require additional data and cross-functional input beyond the scope of this analysis.
-
-## 10.Deliverables
-Deliverable 1: spatial distribution of negative reviews, delivery time, order volume, and seller density.
-
-Deliverable 2: [to be specified]
-
-Deliverable 3: [to be specified]
-
-## 11. Success Criteria
-[to be specified]
-
-
+outputs/
+maps
+figures
