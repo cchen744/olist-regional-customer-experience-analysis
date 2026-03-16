@@ -55,14 +55,23 @@ num_items
 ```
 
 ## 4. Exploratory Data Analysis
-(1) Review the distribution of negative reviews
-(2) Compare delievery delay with review outcome
-(3) ?
+Conduct data overview and visualization of:
+
+(1) Reviews
+
+(2) Delivery performance
+
+(3) Shipping distance
+
+(4) Seller & Customer
 
 ## 5. Modeling
 **Baseline**: Logistic Regression
-**Main model**: (Gradient Boosting)?
+
+**Main model**: (Gradient Boosting)
+
 **Prediction target**: negative review
+
 **Evaluation Metrics**: ROC-AUC; Precision; Recall
 
 ## 6.Model Interpretation
@@ -70,9 +79,13 @@ Use SHAP values and feature importance analysis to identify drivers of customer 
 
 ## 7. Spatial Analysis
 Goal: identify geographic clusters of high dissatisfaction risk
+
 Processes:
+
 (1) predict complaint probability for each other
+
 (2) aggregate predictions by city/state
+
 (3) create spatial risk maps
 
 ## 8. Key Findings
