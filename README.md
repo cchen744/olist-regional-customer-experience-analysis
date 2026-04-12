@@ -76,11 +76,26 @@ Given the imbalanced nature of the dataset, model performance is evaluated using
 Model interpretation is conducted using feature importance analysis from XGBoost to identify the key drivers of customer dissatisfaction.
 
 ## 7. Spatial Analysis
-While the primary focus of this project is predictive modeling, preliminary spatial exploration is conducted to examine the geographic distribution of customer dissatisfaction.
+### Integrated Spatial & Modeling Insights
 
-In earlier analysis (see Notebook 01), visualization of regional patterns suggests that negative reviews are not evenly distributed across locations, indicating potential spatial heterogeneity in customer experience.
+Combining spatial exploration with modeling results reveals a consistent and interpretable pattern of customer dissatisfaction across regions.
 
-These observations motivate the potential for future spatial analysis, where predicted risk could be aggregated and mapped to identify high-risk regions and support location-based decision making.
+![Review distribution](https://github.com/cchen744/olist-regional-customer-experience-analysis/blob/main/visualizations/Review.png)
+
+From a spatial perspective, low-density regions in the northwest—particularly within the Amazon rainforest—are characterized by sparse seller networks, long shipping distances, and higher freight ratios. These structural constraints are associated with weaker logistics performance, including longer and less reliable delivery times.
+
+![Poppulation distribution of Brazil](https://github.com/cchen744/olist-regional-customer-experience-analysis/blob/main/visualizations/population.avif)
+![Shipping distance distribution](https://github.com/cchen744/olist-regional-customer-experience-analysis/blob/main/visualizations/Shipping_distance.png)
+![Freight ratio distribution](https://github.com/cchen744/olist-regional-customer-experience-analysis/blob/main/visualizations/freight_ratio.png)
+
+However, modeling results show that **delivery performance (e.g., delay_days)**, rather than geographic distance itself, is the dominant driver of negative reviews. While shipping distance varies significantly across regions, it does not emerge as a strong predictor in the model.
+
+This suggests that geography influences customer experience **indirectly**, through its impact on logistics infrastructure and operational efficiency, rather than as a direct factor.
+
+In contrast, densely populated southeastern regions benefit from concentrated seller networks and shorter delivery times, leading to better customer outcomes. These regional advantages are captured in the model through variables such as delivery delay and freight-related features.
+
+Overall, the findings highlight that **logistics performance acts as the key transmission channel between geographic structure and customer satisfaction**, bridging spatial disparities and business outcomes.
+
 
 ## 8. Key Findings
 
