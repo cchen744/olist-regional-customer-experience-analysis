@@ -6,7 +6,7 @@ Customer reviews provide direct signals of user dissatisfaction and potential fr
 
 This leads to the project's core question:
 ```code
-Which orders are most likely to result in negative customer reviews, and whereare these risks geographically concentrated?
+Which orders are most likely to result in negative customer reviews, and what operational factors drive these outcomes?
 ```
 
 ## 2. Dataset
@@ -43,14 +43,13 @@ customer_location
 seller_location
 shipping_distance # |cutomer_location - seller_location|
 seller_density # this is important because higher seller density might cause more logistic burden.
+_*engineered from geolocation data*_
 ```
 
 (3) **Order & product features**
 ```code
 price
 freight_ratio # freigh_value / price. Note that freight value is shipping cost.
-product_category
-product_size
 num_items
 ```
 
@@ -65,41 +64,40 @@ Conduct data overview and visualization of:
 
 (4) Seller & Customer
 
-## 5. Modeling
-**Baseline**: Logistic Regression
+### Modeling
 
-**Main model**: (Gradient Boosting)
+**Baseline** models include **Logistic Regression and Random Forest**, while **XGBoost** is used as the primary predictive model.
 
-**Prediction target**: negative review
+The modeling task is framed as a binary classification problem to predict the probability of negative reviews.
 
-**Evaluation Metrics**: ROC-AUC; Precision; Recall
+Given the imbalanced nature of the dataset, model performance is evaluated using **ROC-AUC and recall**, with particular emphasis on the model’s ability to detect negative cases.
 
 ## 6.Model Interpretation
-Use SHAP values and feature importance analysis to identify drivers of customer dissatisfaction
+Model interpretation is conducted using feature importance analysis from XGBoost to identify the key drivers of customer dissatisfaction.
 
 ## 7. Spatial Analysis
-Goal: identify geographic clusters of high dissatisfaction risk
+While the primary focus of this project is predictive modeling, preliminary spatial exploration is conducted to examine the geographic distribution of customer dissatisfaction.
 
-Processes:
+In earlier analysis (see Notebook 01), visualization of regional patterns suggests that negative reviews are not evenly distributed across locations, indicating potential spatial heterogeneity in customer experience.
 
-(1) predict complaint probability for each other
-
-(2) aggregate predictions by city/state
-
-(3) create spatial risk maps
+These observations motivate the potential for future spatial analysis, where predicted risk could be aggregated and mapped to identify high-risk regions and support location-based decision making.
 
 ## 8. Key Findings
+
+- Delivery delay is the dominant driver of negative reviews, indicating that logistics performance is the primary source of customer dissatisfaction.
+- Freight-related factors also contribute to negative experiences, suggesting that cost perception plays an important role.
+- Advanced models such as XGBoost improve the detection of negative reviews, increasing recall significantly compared to baseline models.
+- However, overall predictive performance remains moderate (ROC-AUC ~0.71), indicating that logistics features alone are insufficient to fully explain customer dissatisfaction.
 
 ## 9. Project Structure
 ```code
 data/
+datasets
+
 notebooks/
-01_data_preparation.ipynb
+01_data_overview.ipynb
 02_feature_engineering.ipynb
-03_EDA.ipynb
-04_modeling.ipynb
-05_geo_analysis.ipynb
+03_modeling.ipynb
 
 outputs/
-maps
-figures
+visualizations
