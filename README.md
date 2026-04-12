@@ -80,13 +80,18 @@ Model interpretation is conducted using feature importance analysis from XGBoost
 
 Combining spatial exploration with modeling results reveals a consistent and interpretable pattern of customer dissatisfaction across regions.
 
-![Review distribution](https://github.com/cchen744/olist-regional-customer-experience-analysis/blob/main/visualizations/Review.png)
+<p align="center">
+  <img src="visualizations/Review.png" width="500"/>
+</p>
 
 From a spatial perspective, low-density regions in the northwest—particularly within the Amazon rainforest—are characterized by sparse seller networks, long shipping distances, and higher freight ratios. These structural constraints are associated with weaker logistics performance, including longer and less reliable delivery times.
 
-![Poppulation distribution of Brazil](https://github.com/cchen744/olist-regional-customer-experience-analysis/blob/main/visualizations/population.avif)
-![Shipping distance distribution](https://github.com/cchen744/olist-regional-customer-experience-analysis/blob/main/visualizations/Shipping_distance.png)
-![Freight ratio distribution](https://github.com/cchen744/olist-regional-customer-experience-analysis/blob/main/visualizations/freight_ratio.png)
+<table>
+  <tr>
+    <td><img src="visualizations/Shipping_distance.png" width="500"/></td>
+    <td><img src="visualizations/freight_ratio.png" width="500"/></td>
+  </tr>
+</table>
 
 However, modeling results show that **delivery performance (e.g., delay_days)**, rather than geographic distance itself, is the dominant driver of negative reviews. While shipping distance varies significantly across regions, it does not emerge as a strong predictor in the model.
 
@@ -104,7 +109,43 @@ Overall, the findings highlight that **logistics performance acts as the key tra
 - Advanced models such as XGBoost improve the detection of negative reviews, increasing recall significantly compared to baseline models.
 - However, overall predictive performance remains moderate (ROC-AUC ~0.71), indicating that logistics features alone are insufficient to fully explain customer dissatisfaction.
 
-## 9. Project Structure
+## 9. Business Implications
+
+The findings of this project provide several actionable insights for improving customer experience on the Olist platform.
+
+First, logistics performance should be prioritized as the primary lever for improving customer satisfaction. Since delivery delay is identified as the strongest predictor of negative reviews, operational efforts should focus on reducing late deliveries through better routing, inventory placement, and last-mile coordination.
+
+Second, a region-specific strategy is necessary. Low-density regions in the northwest face structural disadvantages such as long shipping distances and sparse seller networks. Rather than applying uniform standards, Olist should consider targeted interventions in these regions, such as expanding local seller networks or partnering with regional logistics providers.
+
+Third, cost perception plays an important role in customer dissatisfaction. The significance of freight-related features suggests that customers are sensitive not only to delivery speed but also to shipping costs. Improving price transparency or offering shipping subsidies in high-cost regions may help mitigate negative experiences.
+
+Overall, these findings suggest that improving logistics efficiency—rather than addressing geographic distance directly—is the most effective way to enhance customer experience.
+
+## 10. Limitations
+
+Several limitations should be considered when interpreting the results of this analysis.
+
+First, the model does not include comprehensive delivery performance features. While variables such as delay_days are incorporated, more detailed logistics data (e.g., real-time tracking or fulfillment operations) are not available, which limits the model’s explanatory power.
+
+Second, the predictive performance of the model remains moderate (ROC-AUC ≈ 0.71), indicating that customer dissatisfaction is influenced by additional factors beyond those captured in the dataset, such as product quality or customer expectations.
+
+Third, the spatial analysis is conducted at a relatively coarse geographic level. State-level aggregation may obscure important variations at the city or zipcode level, limiting the precision of spatial insights.
+
+Finally, this study is based on observational data, and the results should be interpreted as correlations rather than causal relationships.
+
+## 11. Future Work
+
+Future work can extend this project in several directions to improve both analytical depth and practical impact.
+
+First, incorporating richer logistics data—such as fulfillment time, warehouse location, and real-time delivery tracking—would provide a more comprehensive understanding of delivery performance and its impact on customer satisfaction.
+
+Second, increasing spatial granularity to the city or zipcode level would enable more precise identification of regional inefficiencies and support more targeted operational strategies.
+
+Third, integrating additional behavioral and product-related features (e.g., product category, seller reputation, and customer history) may improve model performance and provide a more holistic view of the drivers of negative reviews.
+
+Finally, extending the analysis to a temporal or panel data framework would allow for the study of changes in customer experience over time, offering deeper insights into how logistics improvements or market dynamics affect outcomes.
+
+## Project Structure
 ```code
 data/
 datasets
